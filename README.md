@@ -19,7 +19,7 @@ A modern e-commerce pharmacy platform built for Rwanda — browse medicines, man
 - Product catalog with search, filter by category, pagination
 - Shopping cart with real-time quantity management
 - Prescription upload for restricted medications
-- Order tracking (Pending → Confirmed → Processing → Shipped → Delivered)
+- Order tracking (Pending, Confirmed, Processing, Shipped, Delivered)
 - Admin analytics dashboard with charts (revenue, top products, orders)
 - Low-stock alerts for admins
 - JWT refresh tokens + rate limiting (advanced security)

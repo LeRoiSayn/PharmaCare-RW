@@ -6,7 +6,7 @@ import {
 } from 'recharts';
 import {
   CurrencyDollarIcon, ShoppingBagIcon, UsersIcon, ClockIcon,
-  ExclamationTriangleIcon, ArrowTrendingUpIcon, ArrowTrendingDownIcon,
+  ExclamationTriangleIcon, ArrowTrendingUpIcon, ArrowTrendingDownIcon, CheckCircleIcon, ArrowRightIcon,
 } from '@heroicons/react/24/outline';
 import { analyticsAPI } from '../../services/api';
 import LoadingSpinner from '../../components/ui/LoadingSpinner';
@@ -150,7 +150,7 @@ export default function AdminDashboard() {
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-gray-900">Top Products</h3>
-            <Link to="/admin/products" className="text-xs text-primary-600 hover:text-primary-700">Manage →</Link>
+            <Link to="/admin/products" className="text-xs text-primary-600 hover:text-primary-700 flex items-center gap-0.5">Manage <ArrowRightIcon className="w-3 h-3" /></Link>
           </div>
           {topProducts.length === 0 ? (
             <p className="text-sm text-gray-400 py-4 text-center">No sales data yet</p>
@@ -178,7 +178,7 @@ export default function AdminDashboard() {
           </div>
           {lowStockProducts.length === 0 ? (
             <div className="text-center py-6">
-              <p className="text-green-600 text-sm font-medium">✓ All products well-stocked</p>
+              <p className="text-green-600 text-sm font-medium flex items-center gap-1 justify-center"><CheckCircleIcon className="w-4 h-4" /> All products well-stocked</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -198,7 +198,7 @@ export default function AdminDashboard() {
         <div className="card p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-gray-900">Recent Orders</h3>
-            <Link to="/admin/orders" className="text-xs text-primary-600 hover:text-primary-700">View all →</Link>
+            <Link to="/admin/orders" className="text-xs text-primary-600 hover:text-primary-700 flex items-center gap-0.5">View all <ArrowRightIcon className="w-3 h-3" /></Link>
           </div>
           {recentOrders.length === 0 ? (
             <p className="text-sm text-gray-400 py-4 text-center">No orders yet</p>

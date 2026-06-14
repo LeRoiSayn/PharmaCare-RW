@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { TrashIcon, ShoppingBagIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+import { TrashIcon, ShoppingBagIcon, ArrowRightIcon, ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import useCartStore from '../store/cartStore';
 import useAuthStore from '../store/authStore';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
@@ -62,7 +62,7 @@ export default function Cart() {
                   {item.product.name}
                 </Link>
                 {item.product.prescriptionRequired && (
-                  <span className="text-xs text-amber-600 font-medium">⚠ Prescription Required</span>
+                  <span className="text-xs text-amber-600 font-medium flex items-center gap-1"><ExclamationTriangleIcon className="w-3 h-3" /> Prescription Required</span>
                 )}
                 <p className="text-primary-600 font-semibold mt-1">{item.product.price.toLocaleString()} RWF</p>
 
@@ -111,7 +111,7 @@ export default function Cart() {
                 <span>{total.toLocaleString()} RWF</span>
               </div>
               {total >= 10000 && (
-                <p className="text-xs text-green-600 mt-1">✓ Free delivery included</p>
+                <p className="text-xs text-green-600 mt-1 flex items-center gap-1"><CheckCircleIcon className="w-3 h-3" /> Free delivery included</p>
               )}
             </div>
             <Link to="/checkout" className="btn-primary w-full flex items-center justify-center gap-2 py-3">

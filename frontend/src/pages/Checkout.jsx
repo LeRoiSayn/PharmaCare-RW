@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CloudArrowUpIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline';
+import { CloudArrowUpIcon, ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 import useCartStore from '../store/cartStore';
 import useAuthStore from '../store/authStore';
 import { ordersAPI, uploadAPI } from '../services/api';
@@ -144,7 +144,7 @@ export default function Checkout() {
                   <span className="text-sm text-gray-600">Uploading...</span>
                 ) : prescriptionUrl ? (
                   <div className="text-center">
-                    <p className="text-sm font-medium text-green-700">Prescription uploaded ✓</p>
+                    <p className="text-sm font-medium text-green-700 flex items-center gap-1"><CheckCircleIcon className="w-4 h-4" /> Prescription uploaded</p>
                     <p className="text-xs text-gray-500 mt-1">{prescriptionFile?.name}</p>
                     <p className="text-xs text-primary-600 mt-1">Click to change</p>
                   </div>

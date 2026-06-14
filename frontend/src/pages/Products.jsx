@@ -131,7 +131,7 @@ export default function Products() {
             <LoadingSpinner text="Loading products..." />
           ) : products.length === 0 ? (
             <div className="text-center py-16">
-              <div className="text-5xl mb-4">🔍</div>
+              <MagnifyingGlassIcon className="w-12 h-12 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-semibold text-gray-900 mb-2">No products found</h3>
               <p className="text-gray-500 text-sm">Try a different search term or category</p>
             </div>

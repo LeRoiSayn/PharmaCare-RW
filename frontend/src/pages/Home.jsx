@@ -1,26 +1,30 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowRightIcon, ShieldCheckIcon, TruckIcon, ClockIcon, PhoneIcon } from '@heroicons/react/24/outline';
+import {
+  ArrowRightIcon, ShieldCheckIcon, TruckIcon, ClockIcon, PhoneIcon,
+  BoltIcon, SunIcon, HeartIcon, BeakerIcon, PlusCircleIcon,
+  SparklesIcon, UserCircleIcon, FireIcon,
+} from '@heroicons/react/24/outline';
 import { productsAPI } from '../services/api';
 import ProductCard from '../components/ui/ProductCard';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 const CATEGORIES = [
-  { key: 'PAIN_RELIEF', label: 'Pain Relief', icon: '💊', color: 'bg-red-50 border-red-200 text-red-700' },
-  { key: 'ANTIBIOTICS', label: 'Antibiotics', icon: '🦠', color: 'bg-orange-50 border-orange-200 text-orange-700' },
-  { key: 'VITAMINS_SUPPLEMENTS', label: 'Vitamins', icon: '🌿', color: 'bg-yellow-50 border-yellow-200 text-yellow-700' },
-  { key: 'CARDIOVASCULAR', label: 'Heart Health', icon: '❤️', color: 'bg-pink-50 border-pink-200 text-pink-700' },
-  { key: 'DIABETES', label: 'Diabetes', icon: '🩺', color: 'bg-purple-50 border-purple-200 text-purple-700' },
-  { key: 'BABY_CARE', label: 'Baby Care', icon: '👶', color: 'bg-rose-50 border-rose-200 text-rose-700' },
-  { key: 'FIRST_AID', label: 'First Aid', icon: '🚑', color: 'bg-cyan-50 border-cyan-200 text-cyan-700' },
-  { key: 'PERSONAL_CARE', label: 'Personal Care', icon: '🧴', color: 'bg-emerald-50 border-emerald-200 text-emerald-700' },
+  { key: 'PAIN_RELIEF',          label: 'Pain Relief',   icon: BoltIcon },
+  { key: 'ANTIBIOTICS',          label: 'Antibiotics',   icon: ShieldCheckIcon },
+  { key: 'VITAMINS_SUPPLEMENTS', label: 'Vitamins',      icon: SunIcon },
+  { key: 'CARDIOVASCULAR',       label: 'Heart Health',  icon: HeartIcon },
+  { key: 'DIABETES',             label: 'Diabetes',      icon: BeakerIcon },
+  { key: 'BABY_CARE',            label: 'Baby Care',     icon: UserCircleIcon },
+  { key: 'FIRST_AID',            label: 'First Aid',     icon: PlusCircleIcon },
+  { key: 'PERSONAL_CARE',        label: 'Personal Care', icon: SparklesIcon },
 ];
 
 const FEATURES = [
-  { icon: <ShieldCheckIcon className="w-6 h-6" />, title: 'Licensed Pharmacy', desc: 'All products are certified and regulated by Rwanda FDA.' },
-  { icon: <TruckIcon className="w-6 h-6" />, title: 'Fast Delivery', desc: 'Same-day delivery across Kigali and next-day nationwide.' },
-  { icon: <ClockIcon className="w-6 h-6" />, title: '24/7 Support', desc: 'Our pharmacists are always available to help you.' },
-  { icon: <PhoneIcon className="w-6 h-6" />, title: 'Easy Ordering', desc: 'Order from anywhere. Upload your prescription easily.' },
+  { icon: ShieldCheckIcon, title: 'Licensed Pharmacy',  desc: 'All products certified and regulated by Rwanda FDA.' },
+  { icon: TruckIcon,       title: 'Fast Delivery',      desc: 'Same-day delivery across Kigali and next-day nationwide.' },
+  { icon: ClockIcon,       title: '24/7 Support',       desc: 'Our pharmacists are always available to help you.' },
+  { icon: PhoneIcon,       title: 'Easy Ordering',      desc: 'Order from anywhere. Upload your prescription easily.' },
 ];
 
 export default function Home() {
@@ -38,16 +42,12 @@ export default function Home() {
   return (
     <div className="animate-fade-in">
       {/* Hero */}
-      <section className="relative bg-gradient-to-br from-primary-700 via-primary-600 to-teal-600 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl" />
-        </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+      <section className="bg-primary-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm text-white text-sm font-medium px-3 py-1.5 rounded-full mb-6">
-              <span className="w-2 h-2 bg-green-300 rounded-full animate-pulse" />
-              Rwanda's #1 Online Pharmacy
+            <div className="inline-flex items-center gap-2 bg-white/10 text-white text-sm font-medium px-3 py-1.5 rounded-full mb-6 border border-white/20">
+              <span className="w-2 h-2 bg-green-300 rounded-full" />
+              Rwanda's Trusted Online Pharmacy
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
               Your Health,<br />
@@ -60,14 +60,14 @@ export default function Home() {
               <Link to="/products" className="inline-flex items-center justify-center gap-2 bg-white text-primary-700 font-semibold px-6 py-3 rounded-xl hover:bg-primary-50 transition-colors">
                 Shop Now <ArrowRightIcon className="w-4 h-4" />
               </Link>
-              <Link to="/products?category=VITAMINS_SUPPLEMENTS" className="inline-flex items-center justify-center gap-2 bg-white/20 backdrop-blur-sm text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/30 transition-colors border border-white/30">
+              <Link to="/products?category=VITAMINS_SUPPLEMENTS" className="inline-flex items-center justify-center gap-2 bg-white/10 text-white font-semibold px-6 py-3 rounded-xl hover:bg-white/20 transition-colors border border-white/20">
                 View Vitamins
               </Link>
             </div>
-            <div className="flex items-center gap-6 mt-10 text-sm text-primary-200">
-              <span>✓ Free delivery over 10,000 RWF</span>
-              <span>✓ Genuine products</span>
-              <span>✓ Easy prescription upload</span>
+            <div className="flex flex-wrap items-center gap-5 mt-10 text-sm text-primary-200">
+              <span className="flex items-center gap-1.5"><ShieldCheckIcon className="w-4 h-4" /> Free delivery over 10,000 RWF</span>
+              <span className="flex items-center gap-1.5"><ShieldCheckIcon className="w-4 h-4" /> Genuine products</span>
+              <span className="flex items-center gap-1.5"><ShieldCheckIcon className="w-4 h-4" /> Easy prescription upload</span>
             </div>
           </div>
         </div>
@@ -80,7 +80,7 @@ export default function Home() {
             {FEATURES.map((f) => (
               <div key={f.title} className="flex flex-col items-center text-center p-4">
                 <div className="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center text-primary-600 mb-3">
-                  {f.icon}
+                  <f.icon className="w-6 h-6" />
                 </div>
                 <h3 className="font-semibold text-gray-900 text-sm mb-1">{f.title}</h3>
                 <p className="text-xs text-gray-500 leading-relaxed">{f.desc}</p>
@@ -106,10 +106,12 @@ export default function Home() {
             <button
               key={cat.key}
               onClick={() => navigate(`/products?category=${cat.key}`)}
-              className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all hover:scale-105 ${cat.color}`}
+              className="flex flex-col items-center gap-2 p-4 rounded-xl border border-gray-200 bg-white hover:border-primary-400 hover:bg-primary-50 transition-all group"
             >
-              <span className="text-2xl">{cat.icon}</span>
-              <span className="text-xs font-medium text-center leading-tight">{cat.label}</span>
+              <cat.icon className="w-6 h-6 text-gray-500 group-hover:text-primary-600 transition-colors" />
+              <span className="text-xs font-medium text-gray-600 group-hover:text-primary-700 text-center leading-tight transition-colors">
+                {cat.label}
+              </span>
             </button>
           ))}
         </div>
@@ -138,8 +140,9 @@ export default function Home() {
       </section>
 
       {/* CTA Banner */}
-      <section className="bg-gradient-to-r from-primary-600 to-teal-600 text-white">
+      <section className="bg-primary-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+          <PlusCircleIcon className="w-10 h-10 mx-auto mb-3 text-primary-200" />
           <h2 className="text-2xl font-bold mb-3">Need a Prescription Filled?</h2>
           <p className="text-primary-100 mb-6 max-w-lg mx-auto">Upload your prescription and we'll prepare your order. Delivery across all of Rwanda.</p>
           <Link to="/products" className="inline-flex items-center gap-2 bg-white text-primary-700 font-semibold px-6 py-3 rounded-xl hover:bg-primary-50 transition-colors">

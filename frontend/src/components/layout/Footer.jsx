@@ -52,7 +52,7 @@ export default function Footer() {
           <p className="text-xs text-gray-500">© 2025 PharmaCare Rwanda. All rights reserved.</p>
           <div className="flex items-center gap-4 text-xs text-gray-500">
             <span>Regulated by Rwanda FDA</span>
-            <span>•</span>
+            <span className="text-gray-700">|</span>
             <span>Licensed Pharmacy</span>
           </div>
         </div>

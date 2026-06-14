@@ -48,7 +48,7 @@ export default function OrderConfirmation() {
           {STATUS_STEPS.map((step, i) => (
             <div key={step} className="flex flex-col items-center gap-2 relative">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center z-10 transition-colors ${i <= currentStep ? 'bg-primary-600 text-white' : 'bg-gray-200 text-gray-400'}`}>
-                {i < currentStep ? '✓' : i === currentStep ? (step === 'SHIPPED' ? <TruckIcon className="w-4 h-4" /> : <ClockIcon className="w-4 h-4" />) : <span className="w-2 h-2 rounded-full bg-current" />}
+                {i < currentStep ? <CheckCircleIcon className="w-4 h-4" /> : i === currentStep ? (step === 'SHIPPED' ? <TruckIcon className="w-4 h-4" /> : <ClockIcon className="w-4 h-4" />) : <span className="w-2 h-2 rounded-full bg-current" />}
               </div>
               <span className="text-xs text-gray-600 font-medium hidden sm:block">{STATUS_LABELS[step]}</span>
             </div>
