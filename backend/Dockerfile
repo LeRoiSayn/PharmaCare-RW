@@ -21,4 +21,4 @@ COPY . .
 RUN mkdir -p uploads
 
 EXPOSE 5001
-CMD ["sh", "-c", "npx prisma migrate deploy && node src/app.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node prisma/seed.js && node src/app.js"]
