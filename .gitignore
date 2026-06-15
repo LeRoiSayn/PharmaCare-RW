@@ -31,9 +31,8 @@ Thumbs.db
 *.swp
 *.swo
 
-# Prisma
-backend/prisma/migrations/
-!backend/prisma/migrations/.gitkeep
+# Prisma (migrations are committed for CI/CD)
+backend/prisma/migrations/.gitkeep
 
 # Uploads
 backend/uploads/*
