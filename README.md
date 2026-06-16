@@ -1,6 +1,37 @@
-# PharmaCare Rwanda 💊
+# PharmaCare Rwanda
 
-A modern e-commerce pharmacy platform built for Rwanda — browse medicines, manage prescriptions, and track orders online.
+A full-stack e-commerce pharmacy platform for Rwanda — browse medicines, upload prescriptions, pay via mobile money, and track orders online.
+
+**Live Application:** https://pharmacare-rw.onrender.com  
+**Backend API:** https://pharmacare-api-9o21.onrender.com/api/health  
+**GitHub Repository:** https://github.com/LeRoiSayn/PharmaCare-RW
+
+---
+
+## Screenshots
+
+### Homepage
+![Homepage](screenshots/homepage.png)
+
+### Product Catalog
+![Products](screenshots/products.png)
+
+### Product Detail
+![Product Detail](screenshots/product-detail.png)
+
+### Shopping Cart
+![Shopping Cart](screenshots/cart.png)
+
+### Checkout with Mobile Money
+![Checkout](screenshots/checkout.png)
+
+### Admin Analytics Dashboard
+![Admin Dashboard](screenshots/admin-dashboard.png)
+
+### Admin Product Management
+![Admin Products](screenshots/admin-products.png)
+
+---
 
 ## Tech Stack
 
@@ -9,121 +40,76 @@ A modern e-commerce pharmacy platform built for Rwanda — browse medicines, man
 | Frontend | React 18 + Vite + TailwindCSS + Zustand |
 | Backend | Node.js + Express.js + Prisma ORM |
 | Database | PostgreSQL 16 |
-| Auth | JWT (access + refresh tokens) + bcryptjs |
+| Authentication | JWT (access + refresh tokens) + bcryptjs |
+| Icons | Heroicons |
+| Charts | Recharts |
 | Containerization | Docker + Docker Compose |
 | CI/CD | GitHub Actions |
 | Deployment | Render.com |
 
+---
+
 ## Features
 
-- Product catalog with search, filter by category, pagination
+- Product catalog with search, filter by category, and pagination
 - Shopping cart with real-time quantity management
 - Prescription upload for restricted medications
-- Order tracking (Pending, Confirmed, Processing, Shipped, Delivered)
-- Admin analytics dashboard with charts (revenue, top products, orders)
-- Low-stock alerts for admins
-- JWT refresh tokens + rate limiting (advanced security)
-- Fully responsive (mobile-first)
+- Mobile money payment (MTN MoMo & Airtel Money) with Transaction ID verification
+- Order tracking: Pending → Confirmed → Processing → Shipped → Delivered
+- Admin analytics dashboard: revenue charts, top products, orders by status
+- Low-stock alerts for inventory management
+- Full product CRUD for admins
+- JWT refresh token rotation + rate limiting
 
-## Quick Start (Local Dev with Docker)
-
-```bash
-# 1. Clone the repo
-git clone <your-repo-url>
-cd pharmacare
-
-# 2. Start only the database for dev
-docker compose -f docker-compose.dev.yml up -d
-
-# 3. Setup backend
-cd backend
-cp .env.example .env
-npm install
-npx prisma migrate dev --name init
-npm run db:seed
-npm run dev
-
-# 4. Setup frontend (new terminal)
-cd frontend
-cp .env.example .env
-npm install
-npm run dev
-```
-
-Frontend: http://localhost:5173  
-Backend API: http://localhost:5000/api  
-Prisma Studio: `npm run db:studio`
-
-## Run with Docker (Full Stack)
-
-```bash
-docker compose up --build
-```
-
-- Frontend: http://localhost:3000
-- Backend: http://localhost:5000
+---
 
 ## Test Accounts
 
 | Role | Email | Password |
 |------|-------|----------|
-| Admin | admin@pharmacare.rw | admin123 |
+| Admin | massivsaine@pharmacare.rw | Sain1235 |
 | Customer | customer@example.com | customer123 |
 
-## Deployment (Render.com)
-
-### Backend (Web Service)
-- Build Command: `cd backend && npm ci && npx prisma generate && npx prisma migrate deploy`
-- Start Command: `cd backend && node src/app.js`
-- Environment Variables: Set `DATABASE_URL`, `JWT_SECRET`, `JWT_REFRESH_SECRET`, `NODE_ENV=production`, `FRONTEND_URL`
-
-### Frontend (Static Site)
-- Build Command: `cd frontend && npm ci && npm run build`
-- Publish Directory: `frontend/dist`
-- Environment Variable: `VITE_API_URL=https://your-backend.onrender.com/api`
-
-### GitHub Actions Secrets Required
-- `DOCKER_USERNAME` — Docker Hub username
-- `DOCKER_TOKEN` — Docker Hub access token
-- `RENDER_BACKEND_DEPLOY_HOOK` — Render deploy hook URL for backend
-- `RENDER_FRONTEND_DEPLOY_HOOK` — Render deploy hook URL for frontend
-- `VITE_API_URL` — Production API URL
+---
 
 ## Project Structure
 
 ```
 pharmacare/
-├── backend/               # Node.js + Express API
+├── backend/
 │   ├── src/
-│   │   ├── controllers/   # Business logic
-│   │   ├── routes/        # API endpoints
-│   │   ├── middleware/    # Auth, error handling
+│   │   ├── controllers/     # Business logic
+│   │   ├── routes/          # API endpoints
+│   │   ├── middleware/       # Auth, error handling
 │   │   └── app.js
 │   ├── prisma/
-│   │   ├── schema.prisma  # Database schema
-│   │   └── seed.js        # Sample data
+│   │   ├── schema.prisma    # Database schema
+│   │   ├── migrations/      # SQL migrations
+│   │   └── seed.js          # Sample data
 │   └── Dockerfile
-├── frontend/              # React SPA
+├── frontend/
 │   ├── src/
-│   │   ├── components/    # Reusable UI components
-│   │   ├── pages/         # Route pages + admin
-│   │   ├── store/         # Zustand state management
-│   │   └── services/      # API client
+│   │   ├── components/      # Reusable UI components
+│   │   ├── pages/           # Route pages + admin panel
+│   │   ├── store/           # Zustand state management
+│   │   └── services/        # Axios API client
 │   └── Dockerfile
-├── docker-compose.yml     # Full stack (production-like)
-├── docker-compose.dev.yml # DB only (dev mode)
-└── .github/workflows/     # CI/CD pipelines
+├── docker-compose.yml
+├── docker-compose.dev.yml
+└── .github/workflows/       # CI/CD pipelines
 ```
+
+---
 
 ## API Endpoints
 
-| Method | Path | Auth | Description |
-|--------|------|------|-------------|
-| POST | /api/auth/register | - | Register new user |
-| POST | /api/auth/login | - | Login |
-| POST | /api/auth/refresh | - | Refresh access token |
-| GET | /api/products | - | List products (filterable) |
-| GET | /api/products/:id | - | Product detail |
+| Method | Path | Access | Description |
+|--------|------|--------|-------------|
+| POST | /api/auth/register | Public | Register new user |
+| POST | /api/auth/login | Public | Login |
+| POST | /api/auth/refresh | Public | Refresh access token |
+| GET | /api/products | Public | List products (filterable) |
+| GET | /api/products/:id | Public | Product detail |
 | POST | /api/products | Admin | Create product |
 | GET | /api/cart | User | Get cart |
 | POST | /api/cart | User | Add to cart |
