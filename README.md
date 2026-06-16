@@ -8,6 +8,15 @@ A full-stack e-commerce pharmacy platform for Rwanda — browse medicines, uploa
 
 ---
 
+## Test Accounts
+
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | massivsaine@pharmacare.rw | Sain1235 |
+| Customer | customer@example.com | customer123 |
+
+---
+
 ## Screenshots
 
 ### Homepage
@@ -61,14 +70,7 @@ A full-stack e-commerce pharmacy platform for Rwanda — browse medicines, uploa
 - Full product CRUD for admins
 - JWT refresh token rotation + rate limiting
 
----
 
-## Test Accounts
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | massivsaine@pharmacare.rw | Sain1235 |
-| Customer | customer@example.com | customer123 |
 
 ---
 
