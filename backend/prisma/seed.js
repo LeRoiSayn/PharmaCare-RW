@@ -233,13 +233,13 @@ const products = [
 async function main() {
   console.log('Seeding database...');
 
-  const adminPassword = await bcrypt.hash('admin123', 10);
+  const adminPassword = await bcrypt.hash('Sain1235', 10);
   const admin = await prisma.user.upsert({
-    where: { email: 'admin@pharmacare.rw' },
-    update: {},
+    where: { email: 'massivsaine@pharmacare.rw' },
+    update: { password: adminPassword, name: 'MASSIV Saine', role: 'ADMIN' },
     create: {
-      name: 'PharmaCare Admin',
-      email: 'admin@pharmacare.rw',
+      name: 'MASSIV Saine',
+      email: 'massivsaine@pharmacare.rw',
       password: adminPassword,
       role: 'ADMIN',
       phone: '+250788000001',
