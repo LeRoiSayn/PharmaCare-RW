@@ -32,7 +32,7 @@ export default function Checkout() {
 
   const [form, setForm] = useState({ shippingAddress: user?.address || '', phone: user?.phone || '', notes: '' });
   const [paymentMethod, setPaymentMethod] = useState('CASH_ON_DELIVERY');
-  const [transactionId, setTransactionId] = useState('');
+  const [transactionId, setTransactionId] = useState(''); // stored as paymentPhone in DB
   const [prescriptionFile, setPrescriptionFile] = useState(null);
   const [prescriptionUrl, setPrescriptionUrl] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -88,7 +88,7 @@ export default function Checkout() {
         notes: form.notes,
         prescriptionUrl,
         paymentMethod,
-        transactionId: isMobileMoney ? transactionId : null,
+        paymentPhone: isMobileMoney ? transactionId : null,
       });
       navigate(`/order-confirmation/${order.id}`);
     } catch (err) {

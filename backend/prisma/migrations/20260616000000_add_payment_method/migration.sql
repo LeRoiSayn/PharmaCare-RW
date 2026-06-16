@@ -3,4 +3,4 @@ CREATE TYPE "PaymentMethod" AS ENUM ('CASH_ON_DELIVERY', 'MTN_MOBILE_MONEY', 'AI
 
 -- AlterTable
 ALTER TABLE "orders" ADD COLUMN "paymentMethod" "PaymentMethod" NOT NULL DEFAULT 'CASH_ON_DELIVERY';
-ALTER TABLE "orders" ADD COLUMN "transactionId" TEXT;
+ALTER TABLE "orders" ADD COLUMN "paymentPhone" TEXT;

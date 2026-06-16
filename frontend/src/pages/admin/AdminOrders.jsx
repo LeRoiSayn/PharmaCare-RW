@@ -111,8 +111,8 @@ export default function AdminOrders() {
                       {order.paymentMethod === 'CASH_ON_DELIVERY' && (
                         <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700">Cash on Delivery</span>
                       )}
-                      {order.transactionId && (
-                        <p className="text-xs text-gray-500 mt-1 font-mono">ID: {order.transactionId}</p>
+                      {order.paymentPhone && (
+                        <p className="text-xs text-gray-500 mt-1 font-mono">ID: {order.paymentPhone}</p>
                       )}
                     </td>
                     <td className="px-4 py-3">
