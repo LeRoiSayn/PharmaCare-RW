@@ -1,11 +1,47 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CloudArrowUpIcon, ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import {
+  CloudArrowUpIcon,
+  ExclamationTriangleIcon,
+  CheckCircleIcon,
+  BanknotesIcon,
+  DevicePhoneMobileIcon,
+} from '@heroicons/react/24/outline';
 import useCartStore from '../store/cartStore';
 import useAuthStore from '../store/authStore';
 import { ordersAPI, uploadAPI } from '../services/api';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import toast from 'react-hot-toast';
+
+const PAYMENT_METHODS = [
+  {
+    id: 'CASH_ON_DELIVERY',
+    label: 'Cash on Delivery',
+    description: 'Pay when your order arrives',
+    icon: BanknotesIcon,
+    color: 'gray',
+  },
+  {
+    id: 'MTN_MOBILE_MONEY',
+    label: 'MTN Mobile Money',
+    description: 'Pay via MTN MoMo',
+    icon: DevicePhoneMobileIcon,
+    color: 'yellow',
+  },
+  {
+    id: 'AIRTEL_MONEY',
+    label: 'Airtel Money',
+    description: 'Pay via Airtel Money',
+    icon: DevicePhoneMobileIcon,
+    color: 'red',
+  },
+];
+
+const colorMap = {
+  gray: { border: 'border-gray-400', bg: 'bg-gray-50', text: 'text-gray-700', badge: 'bg-gray-100 text-gray-700' },
+  yellow: { border: 'border-yellow-400', bg: 'bg-yellow-50', text: 'text-yellow-700', badge: 'bg-yellow-100 text-yellow-800' },
+  red: { border: 'border-red-400', bg: 'bg-red-50', text: 'text-red-700', badge: 'bg-red-100 text-red-800' },
+};
 
 export default function Checkout() {
   const { cart, fetchCart, getTotal, hasPrescriptionRequired } = useCartStore();
@@ -13,6 +49,8 @@ export default function Checkout() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({ shippingAddress: user?.address || '', phone: user?.phone || '', notes: '' });
+  const [paymentMethod, setPaymentMethod] = useState('CASH_ON_DELIVERY');
+  const [paymentPhone, setPaymentPhone] = useState(user?.phone || '');
   const [prescriptionFile, setPrescriptionFile] = useState(null);
   const [prescriptionUrl, setPrescriptionUrl] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -26,6 +64,8 @@ export default function Checkout() {
   const needsPrescription = hasPrescriptionRequired();
   const total = getTotal();
   const items = cart?.items || [];
+  const isMobileMoney = paymentMethod === 'MTN_MOBILE_MONEY' || paymentMethod === 'AIRTEL_MONEY';
+  const deliveryFee = total >= 10000 ? 0 : 1500;
 
   const handlePrescriptionUpload = async (e) => {
     const file = e.target.files[0];
@@ -50,6 +90,10 @@ export default function Checkout() {
       toast.error('Please fill in all required fields');
       return;
     }
+    if (isMobileMoney && !paymentPhone.trim()) {
+      toast.error('Please enter your mobile money number');
+      return;
+    }
     if (needsPrescription && !prescriptionUrl) {
       toast.error('Please upload a prescription for restricted items');
       return;
@@ -61,6 +105,8 @@ export default function Checkout() {
         phone: form.phone,
         notes: form.notes,
         prescriptionUrl,
+        paymentMethod,
+        paymentPhone: isMobileMoney ? paymentPhone : null,
       });
       navigate(`/order-confirmation/${order.id}`);
     } catch (err) {
@@ -79,6 +125,7 @@ export default function Checkout() {
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         <form onSubmit={handleSubmit} className="lg:col-span-3 space-y-6">
+
           {/* Delivery Details */}
           <div className="card p-6">
             <h2 className="font-bold text-gray-900 mb-4">Delivery Details</h2>
@@ -126,6 +173,62 @@ export default function Checkout() {
             </div>
           </div>
 
+          {/* Payment Method */}
+          <div className="card p-6">
+            <h2 className="font-bold text-gray-900 mb-4">Payment Method</h2>
+            <div className="space-y-3">
+              {PAYMENT_METHODS.map((method) => {
+                const selected = paymentMethod === method.id;
+                const colors = colorMap[method.color];
+                const Icon = method.icon;
+                return (
+                  <label
+                    key={method.id}
+                    className={`flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all ${
+                      selected ? `${colors.border} ${colors.bg}` : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                  >
+                    <input
+                      type="radio"
+                      name="paymentMethod"
+                      value={method.id}
+                      checked={selected}
+                      onChange={() => setPaymentMethod(method.id)}
+                      className="sr-only"
+                    />
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${selected ? colors.badge : 'bg-gray-100'}`}>
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="flex-1">
+                      <p className={`font-semibold text-sm ${selected ? colors.text : 'text-gray-800'}`}>{method.label}</p>
+                      <p className="text-xs text-gray-500">{method.description}</p>
+                    </div>
+                    <div className={`w-4 h-4 rounded-full border-2 flex-shrink-0 ${selected ? `${colors.border} border-4` : 'border-gray-300'}`} />
+                  </label>
+                );
+              })}
+            </div>
+
+            {/* Mobile money phone number */}
+            {isMobileMoney && (
+              <div className="mt-4 pt-4 border-t border-gray-100">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {paymentMethod === 'MTN_MOBILE_MONEY' ? 'MTN' : 'Airtel'} Mobile Money Number *
+                </label>
+                <input
+                  type="tel"
+                  value={paymentPhone}
+                  onChange={(e) => setPaymentPhone(e.target.value)}
+                  placeholder="+250 7XX XXX XXX"
+                  className="input-field"
+                />
+                <p className="text-xs text-gray-500 mt-1">
+                  The pharmacy will process your payment via this number after confirming your order.
+                </p>
+              </div>
+            )}
+          </div>
+
           {/* Prescription Upload */}
           {needsPrescription && (
             <div className="card p-6">
@@ -136,7 +239,6 @@ export default function Checkout() {
                   <p className="text-sm text-gray-500 mt-1">Your cart contains prescription-only medication. Please upload a valid prescription.</p>
                 </div>
               </div>
-
               <label className={`flex flex-col items-center justify-center gap-3 border-2 border-dashed rounded-xl p-8 cursor-pointer transition-colors ${prescriptionUrl ? 'border-green-400 bg-green-50' : 'border-gray-300 hover:border-primary-400 bg-gray-50'}`}>
                 <input type="file" accept=".jpg,.jpeg,.png,.pdf" onChange={handlePrescriptionUpload} className="hidden" />
                 <CloudArrowUpIcon className={`w-10 h-10 ${prescriptionUrl ? 'text-green-500' : 'text-gray-400'}`} />
@@ -159,7 +261,7 @@ export default function Checkout() {
           )}
 
           <button type="submit" disabled={submitting || uploading} className="btn-primary w-full py-3 text-base">
-            {submitting ? 'Placing Order...' : `Place Order — ${total.toLocaleString()} RWF`}
+            {submitting ? 'Placing Order...' : `Place Order — ${(total + deliveryFee).toLocaleString()} RWF`}
           </button>
         </form>
 
@@ -191,13 +293,19 @@ export default function Checkout() {
               </div>
               <div className="flex justify-between text-sm text-gray-600">
                 <span>Delivery</span>
-                <span className={total >= 10000 ? 'text-green-600 font-medium' : ''}>
-                  {total >= 10000 ? 'Free' : '1,500 RWF'}
+                <span className={deliveryFee === 0 ? 'text-green-600 font-medium' : ''}>
+                  {deliveryFee === 0 ? 'Free' : '1,500 RWF'}
+                </span>
+              </div>
+              <div className="flex justify-between text-sm text-gray-600">
+                <span>Payment</span>
+                <span className="font-medium text-gray-800">
+                  {PAYMENT_METHODS.find(m => m.id === paymentMethod)?.label}
                 </span>
               </div>
               <div className="flex justify-between font-bold text-gray-900 text-base pt-2 border-t border-gray-100">
                 <span>Total</span>
-                <span>{(total + (total >= 10000 ? 0 : 1500)).toLocaleString()} RWF</span>
+                <span>{(total + deliveryFee).toLocaleString()} RWF</span>
               </div>
             </div>
           </div>

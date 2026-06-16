@@ -21,6 +21,12 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum PaymentMethod {
+  CASH_ON_DELIVERY
+  MTN_MOBILE_MONEY
+  AIRTEL_MONEY
+}
+
 enum Category {
   PAIN_RELIEF
   ANTIBIOTICS
@@ -104,12 +110,14 @@ model Order {
   id               String      @id @default(cuid())
   userId           String
   user             User        @relation(fields: [userId], references: [id])
-  status           OrderStatus @default(PENDING)
+  status           OrderStatus   @default(PENDING)
   total            Float
   shippingAddress  String
   phone            String
   prescriptionUrl  String?
   notes            String?
+  paymentMethod    PaymentMethod @default(CASH_ON_DELIVERY)
+  paymentPhone     String?
   items            OrderItem[]
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
