@@ -117,7 +117,7 @@ model Order {
   prescriptionUrl  String?
   notes            String?
   paymentMethod    PaymentMethod @default(CASH_ON_DELIVERY)
-  paymentPhone     String?
+  transactionId    String?
   items            OrderItem[]
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt

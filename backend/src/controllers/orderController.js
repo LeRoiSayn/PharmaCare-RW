@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 const createOrder = async (req, res) => {
   try {
-    const { shippingAddress, phone, notes, prescriptionUrl, paymentMethod, paymentPhone } = req.body;
+    const { shippingAddress, phone, notes, prescriptionUrl, paymentMethod, transactionId } = req.body;
     if (!shippingAddress || !phone) {
       return res.status(400).json({ message: 'Shipping address and phone are required' });
     }
@@ -39,7 +39,7 @@ const createOrder = async (req, res) => {
         notes,
         prescriptionUrl,
         paymentMethod: paymentMethod || 'CASH_ON_DELIVERY',
-        paymentPhone: paymentPhone || null,
+        transactionId: transactionId || null,
         total,
         items: {
           create: cart.items.map((item) => ({

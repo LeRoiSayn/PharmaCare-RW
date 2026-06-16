@@ -82,7 +82,7 @@ export default function AdminOrders() {
             <table className="w-full text-sm">
               <thead className="bg-gray-50 border-b border-gray-100">
                 <tr>
-                  {['Order', 'Customer', 'Items', 'Total', 'Date', 'Status', 'Actions'].map((h) => (
+                  {['Order', 'Customer', 'Payment', 'Items', 'Total', 'Date', 'Status', 'Actions'].map((h) => (
                     <th key={h} className="px-4 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
                   ))}
                 </tr>
@@ -99,6 +99,21 @@ export default function AdminOrders() {
                     <td className="px-4 py-3">
                       <p className="font-medium text-gray-900">{order.user?.name}</p>
                       <p className="text-xs text-gray-400">{order.user?.email}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">{order.phone}</p>
+                    </td>
+                    <td className="px-4 py-3">
+                      {order.paymentMethod === 'MTN_MOBILE_MONEY' && (
+                        <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-yellow-100 text-yellow-800">MTN MoMo</span>
+                      )}
+                      {order.paymentMethod === 'AIRTEL_MONEY' && (
+                        <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-red-100 text-red-800">Airtel Money</span>
+                      )}
+                      {order.paymentMethod === 'CASH_ON_DELIVERY' && (
+                        <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700">Cash on Delivery</span>
+                      )}
+                      {order.transactionId && (
+                        <p className="text-xs text-gray-500 mt-1 font-mono">ID: {order.transactionId}</p>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <p className="text-gray-900">{order.items?.length} items</p>

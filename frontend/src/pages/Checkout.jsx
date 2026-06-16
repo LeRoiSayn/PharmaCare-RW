@@ -14,33 +14,15 @@ import LoadingSpinner from '../components/ui/LoadingSpinner';
 import toast from 'react-hot-toast';
 
 const PAYMENT_METHODS = [
-  {
-    id: 'CASH_ON_DELIVERY',
-    label: 'Cash on Delivery',
-    description: 'Pay when your order arrives',
-    icon: BanknotesIcon,
-    color: 'gray',
-  },
-  {
-    id: 'MTN_MOBILE_MONEY',
-    label: 'MTN Mobile Money',
-    description: 'Pay via MTN MoMo',
-    icon: DevicePhoneMobileIcon,
-    color: 'yellow',
-  },
-  {
-    id: 'AIRTEL_MONEY',
-    label: 'Airtel Money',
-    description: 'Pay via Airtel Money',
-    icon: DevicePhoneMobileIcon,
-    color: 'red',
-  },
+  { id: 'CASH_ON_DELIVERY', label: 'Cash on Delivery', description: 'Pay when your order arrives', icon: BanknotesIcon, color: 'gray' },
+  { id: 'MTN_MOBILE_MONEY', label: 'MTN Mobile Money', description: 'Pay via MTN MoMo', icon: DevicePhoneMobileIcon, color: 'yellow' },
+  { id: 'AIRTEL_MONEY', label: 'Airtel Money', description: 'Pay via Airtel Money', icon: DevicePhoneMobileIcon, color: 'red' },
 ];
 
 const colorMap = {
-  gray: { border: 'border-gray-400', bg: 'bg-gray-50', text: 'text-gray-700', badge: 'bg-gray-100 text-gray-700' },
+  gray:   { border: 'border-gray-400',  bg: 'bg-gray-50',   text: 'text-gray-700',   badge: 'bg-gray-100 text-gray-700' },
   yellow: { border: 'border-yellow-400', bg: 'bg-yellow-50', text: 'text-yellow-700', badge: 'bg-yellow-100 text-yellow-800' },
-  red: { border: 'border-red-400', bg: 'bg-red-50', text: 'text-red-700', badge: 'bg-red-100 text-red-800' },
+  red:    { border: 'border-red-400',   bg: 'bg-red-50',    text: 'text-red-700',    badge: 'bg-red-100 text-red-800' },
 };
 
 export default function Checkout() {
@@ -50,7 +32,7 @@ export default function Checkout() {
 
   const [form, setForm] = useState({ shippingAddress: user?.address || '', phone: user?.phone || '', notes: '' });
   const [paymentMethod, setPaymentMethod] = useState('CASH_ON_DELIVERY');
-  const [paymentPhone, setPaymentPhone] = useState(user?.phone || '');
+  const [transactionId, setTransactionId] = useState('');
   const [prescriptionFile, setPrescriptionFile] = useState(null);
   const [prescriptionUrl, setPrescriptionUrl] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -90,8 +72,8 @@ export default function Checkout() {
       toast.error('Please fill in all required fields');
       return;
     }
-    if (isMobileMoney && !paymentPhone.trim()) {
-      toast.error('Please enter your mobile money number');
+    if (isMobileMoney && !transactionId.trim()) {
+      toast.error('Please enter your transaction ID');
       return;
     }
     if (needsPrescription && !prescriptionUrl) {
@@ -106,7 +88,7 @@ export default function Checkout() {
         notes: form.notes,
         prescriptionUrl,
         paymentMethod,
-        paymentPhone: isMobileMoney ? paymentPhone : null,
+        transactionId: isMobileMoney ? transactionId : null,
       });
       navigate(`/order-confirmation/${order.id}`);
     } catch (err) {
@@ -193,7 +175,7 @@ export default function Checkout() {
                       name="paymentMethod"
                       value={method.id}
                       checked={selected}
-                      onChange={() => setPaymentMethod(method.id)}
+                      onChange={() => { setPaymentMethod(method.id); setTransactionId(''); }}
                       className="sr-only"
                     />
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${selected ? colors.badge : 'bg-gray-100'}`}>
@@ -209,22 +191,27 @@ export default function Checkout() {
               })}
             </div>
 
-            {/* Mobile money phone number */}
+            {/* Transaction ID for mobile money */}
             {isMobileMoney && (
-              <div className="mt-4 pt-4 border-t border-gray-100">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {paymentMethod === 'MTN_MOBILE_MONEY' ? 'MTN' : 'Airtel'} Mobile Money Number *
-                </label>
-                <input
-                  type="tel"
-                  value={paymentPhone}
-                  onChange={(e) => setPaymentPhone(e.target.value)}
-                  placeholder="+250 7XX XXX XXX"
-                  className="input-field"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  The pharmacy will process your payment via this number after confirming your order.
-                </p>
+              <div className="mt-4 pt-4 border-t border-gray-100 space-y-3">
+                <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-600">
+                  <p className="font-medium text-gray-800 mb-1">How to pay:</p>
+                  <ol className="list-decimal list-inside space-y-1 text-xs">
+                    <li>Send <span className="font-semibold">{(total + deliveryFee).toLocaleString()} RWF</span> to PharmaCare Rwanda via {paymentMethod === 'MTN_MOBILE_MONEY' ? 'MTN MoMo' : 'Airtel Money'}</li>
+                    <li>You will receive an SMS confirmation with a Transaction ID</li>
+                    <li>Enter that Transaction ID below and place your order</li>
+                  </ol>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Transaction ID *</label>
+                  <input
+                    type="text"
+                    value={transactionId}
+                    onChange={(e) => setTransactionId(e.target.value)}
+                    placeholder="e.g. 1234567890"
+                    className="input-field"
+                  />
+                </div>
               </div>
             )}
           </div>
