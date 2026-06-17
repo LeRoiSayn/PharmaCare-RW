@@ -1,6 +1,8 @@
 # PharmaCare Rwanda
 
-A full-stack e-commerce pharmacy platform for Rwanda — browse medicines, upload prescriptions, pay via mobile money, and track orders online.
+A full-stack E-commerce pharmacy platform for Rwanda.
+
+Browse medicines, upload prescriptions, pay via mobile money, and track orders online.
 
 **Live Application:** https://pharmacare-rw.onrender.com  
 **Backend API:** https://pharmacare-api-9o21.onrender.com/api/health  
