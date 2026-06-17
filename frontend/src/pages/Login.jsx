@@ -61,11 +61,6 @@ export default function Login() {
             </button>
           </form>
 
-          <div className="mt-4 p-3 bg-blue-50 rounded-xl text-xs text-blue-700">
-            <p className="font-medium mb-1">Test accounts:</p>
-            <p>Admin: admin@pharmacare.rw / admin123</p>
-            <p>Customer: customer@example.com / customer123</p>
-          </div>
 
           <p className="text-center text-sm text-gray-500 mt-6">
             Don't have an account?{' '}
